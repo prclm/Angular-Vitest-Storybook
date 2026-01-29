@@ -2,8 +2,16 @@
 // This file is loaded before running story tests
 
 import '@angular/compiler';
-import { setProjectAnnotations } from '@storybook/angular';
+import '@analogjs/vitest-angular/setup-zone';
+import { setupTestBed } from '@analogjs/vitest-angular/setup-testbed';
+import { setProjectAnnotations } from '@analogjs/storybook-angular';
 import * as projectAnnotations from './preview';
+
+// Setup Angular TestBed for browser mode
+setupTestBed({
+  zoneless: false,
+  browserMode: true,
+});
 
 // Apply project-level annotations (configurations) to your stories
 const annotations = setProjectAnnotations([projectAnnotations]);

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
+import angular from '@analogjs/vite-plugin-angular';
 
 // More info at: https://storybook.js.org/docs/writing-tests/vitest-addon
 export default defineConfig(async () => {
@@ -13,10 +14,17 @@ export default defineConfig(async () => {
 
   return {
     plugins: [
+      angular({
+        tsconfig: '.storybook/tsconfig.json',
+        jit: true,
+      }),
       // The plugin will run tests for the stories defined in your Storybook config
       // See options at: https://storybook.js.org/docs/writing-tests/vitest-addon#storybooktest
       ...storybookPlugin,
     ],
+    optimizeDeps: {
+      include: ['@angular/compiler'],
+    },
     test: {
       name: 'storybook',
       browser: {
@@ -26,6 +34,7 @@ export default defineConfig(async () => {
         instances: [{ browser: 'chromium' }],
       },
       setupFiles: [
+        '.storybook/compiler-preload.ts',
         '.storybook/vitest-setup.ts',
         '@storybook/addon-vitest/internal/setup-file',
       ],

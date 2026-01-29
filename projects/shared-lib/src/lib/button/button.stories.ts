@@ -1,10 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/angular';
-import { expect, within, userEvent } from '@storybook/test';
+import type { Meta, StoryObj } from '@analogjs/storybook-angular';
+import { expect, within } from '@storybook/test';
 import { Button } from './button';
 
 const meta: Meta<Button> = {
   title: 'Components/Button',
   component: Button,
+  render: (args) => ({
+    props: args,
+  }),
   argTypes: {
     label: { control: 'text' },
     primary: { control: 'boolean' },
