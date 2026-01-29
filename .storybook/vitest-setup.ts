@@ -6,4 +6,7 @@ import { setProjectAnnotations } from '@storybook/angular';
 import * as projectAnnotations from './preview';
 
 // Apply project-level annotations (configurations) to your stories
-setProjectAnnotations([projectAnnotations]);
+const annotations = setProjectAnnotations([projectAnnotations]);
+
+// Make annotations available globally for the addon
+globalThis.globalProjectAnnotations = annotations;

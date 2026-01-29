@@ -11,8 +11,8 @@
     "test:vitest:app1": "vitest run --config=projects/app1/vite.config.ts",
     "test:vitest:app2": "vitest run --config=projects/app2/vite.config.ts",
     "test:vitest:lib": "vitest run --config=projects/shared-lib/vite.config.ts",
-    "test:storybook": "vitest run --project=storybook --workspace=vitest.workspace.ts",
-    "test:storybook:watch": "vitest --project=storybook --workspace=vitest.workspace.ts",
+    "test:storybook": "vitest run --config=vitest.config.storybook.ts",
+    "test:storybook:watch": "vitest --config=vitest.config.storybook.ts",
     "storybook": "ng run app1:storybook",
     "build:storybook": "ng run app1:build-storybook"
   },
@@ -44,6 +44,7 @@
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.2.3",
     "@analogjs/vitest-angular": "^2.2.3",
+    "@angular-devkit/build-angular": "^21.1.2",
     "@angular/build": "^21.1.2",
     "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^21.1.0",
@@ -51,6 +52,7 @@
     "@storybook/angular": "^10.2.1",
     "@storybook/test": "^8.6.15",
     "@vitest/browser": "^4.0.18",
+    "@vitest/browser-playwright": "^4.0.18",
     "jsdom": "^27.1.0",
     "ng-packagr": "^21.1.0",
     "playwright": "^1.58.0",
