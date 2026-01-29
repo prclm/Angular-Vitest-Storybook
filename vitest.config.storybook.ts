@@ -27,7 +27,12 @@ export default defineConfig(async () => {
     ],
     optimizeDeps: {
       include: ['@angular/compiler'],
-      exclude: ['@angular/common', '@angular/platform-browser', '@angular/platform-browser-dynamic'],
+      exclude: [
+        '@angular/common',
+        '@angular/platform-browser',
+        '@angular/platform-browser-dynamic',
+        '@storybook/addon-vitest/internal/test-utils',
+      ],
     },
     test: {
       name: 'storybook',

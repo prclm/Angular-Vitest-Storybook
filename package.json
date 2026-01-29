@@ -14,7 +14,8 @@
     "test:storybook": "vitest run --config=vitest.config.storybook.ts",
     "test:storybook:watch": "vitest --config=vitest.config.storybook.ts",
     "storybook": "ng run app1:storybook",
-    "build:storybook": "ng run app1:build-storybook"
+    "build:storybook": "ng run app1:build-storybook",
+    "postinstall": "patch-package"
   },
   "prettier": {
     "printWidth": 100,
@@ -56,6 +57,7 @@
     "@vitest/browser-playwright": "^4.0.18",
     "jsdom": "^27.1.0",
     "ng-packagr": "^21.1.0",
+    "patch-package": "^8.0.1",
     "playwright": "^1.58.0",
     "storybook": "^10.2.1",
     "typescript": "~5.9.2",
