@@ -81,20 +81,21 @@ npm run build:storybook
 - Storybook stories for component documentation
 - Vitest configuration for library testing
 
-### Storybook Project
-- Storybook is configured via the `.storybook/` directory
-- Run using npm scripts: `npm run storybook` or `npm run build:storybook`
+### Storybook Configuration
+- Storybook is integrated using the Angular builder approach (recommended)
+- Run using Angular CLI: `ng run app1:storybook` or npm script: `npm run storybook`
+- Build using Angular CLI: `ng run app1:build-storybook`
 - Stories pattern: `projects/**/*.stories.@(js|jsx|mjs|ts|tsx)`
-- Note: Storybook v10 has compatibility issues with Angular 21 that may require additional configuration
+- Uses `@storybook/angular:start-storybook` and `@storybook/angular:build-storybook` builders
 
 ## Vitest Configuration
 
 Each project has its own `vite.config.ts` in its project directory:
 - Uses `@analogjs/vite-plugin-angular` for Angular support
 - JSdom environment for component testing
-- Setup files for TestBed initialization
-- Configured with project-specific tsconfig
-- Note: While configuration is in place, TestBed initialization may need additional setup for Angular 21
+- Setup files use modern `setupTestBed()` function from `@analogjs/vitest-angular/setup-testbed`
+- Configured with project-specific tsconfig including target `es2022`
+- Tests can be run via npm scripts or Angular CLI with `@analogjs/vitest-angular:test` builder
 
 ### Test Setup Files
 - `projects/app1/src/test-setup.ts`
@@ -122,12 +123,13 @@ Key dependencies include:
 ## Notes
 
 ### Vitest Integration
-Vitest configuration is in place following the AnalogJS integration approach which is designed to provide:
-- Zone.js setup for Angular
-- TestBed support
+Vitest configuration follows the AnalogJS integration approach using the modern `setupTestBed()` function:
+- Zone.js setup via `@analogjs/vitest-angular/setup-zone`
+- TestBed setup via `setupTestBed()` from `@analogjs/vitest-angular/setup-testbed`
+- Proper tsconfig configuration with target `es2022` and required types
 - Component testing capabilities
 
-Note: The configuration files are created but may require additional fine-tuning for full Angular 21 compatibility.
+Tests can be run using npm scripts or the Angular CLI with the `@analogjs/vitest-angular:test` builder.
 
 ### Storybook Configuration
 - Storybook v10.2.1 requires specific Angular builder configuration

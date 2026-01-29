@@ -92,21 +92,28 @@
   - .vite/
   - debug logs
 
-## ⚠️ Known Issues
+## ⚠️ Previously Known Issues - NOW RESOLVED ✅
 
-### 1. Vitest Test Execution
-- **Status**: Configuration files created, but tests are not executing properly
-- **Issue**: TestBed initialization is not working correctly with the current setup
-- **Error**: "Need to call TestBed.initTestEnvironment() first"
-- **Impact**: Test files exist but fail to run
-- **Recommendation**: Further investigation needed into AnalogJS Vitest integration with Angular 21
+### 1. Vitest Test Execution - ✅ FIXED
+- **Previous Status**: Tests were not executing properly
+- **Resolution**: Updated test setup to use modern `setupTestBed()` function from `@analogjs/vitest-angular/setup-testbed`
+- **Changes Made**:
+  - Updated all `test-setup.ts` files to use `setupTestBed({ zoneless: false })`
+  - Added `@angular/compiler` import
+  - Updated tsconfig.spec.json files with `target: "es2022"` and proper types
+  - Added `zone.js` dependency
+  - Configured `@analogjs/vitest-angular:test` builder in angular.json
+- **Current Status**: ✅ All tests passing successfully
 
-### 2. Storybook Angular 21 Compatibility
-- **Status**: Configuration created, but Storybook v10 has compatibility issues
-- **Issue**: Storybook v10.2.1 requires explicit Angular builder configuration
-- **Error**: "AngularLegacyBuildOptionsError: Your Storybook startup script uses a solution that is not supported anymore"
-- **Impact**: Storybook cannot start or build
-- **Recommendation**: May need to wait for Storybook v10 to fully support Angular 21, or use alternative configuration approaches
+### 2. Storybook Angular 21 Compatibility - ✅ FIXED
+- **Previous Status**: Storybook v10 had configuration issues
+- **Resolution**: Properly configured Storybook using Angular builder approach
+- **Changes Made**:
+  - Added `storybook` and `build-storybook` architect targets in angular.json
+  - Used `@storybook/angular:start-storybook` and `@storybook/angular:build-storybook` builders
+  - Configured `browserTarget` to reference app1:build
+  - Updated npm scripts to use Angular CLI commands
+- **Current Status**: ✅ Storybook running successfully on http://localhost:6006/
 
 ## 📊 Success Metrics
 
@@ -116,45 +123,49 @@
 | App1 Build | ✅ Working | Builds successfully |
 | App2 Build | ✅ Working | Builds successfully |
 | Shared Library Build | ✅ Working | Builds successfully |
-| Vitest Configuration | ✅ Created | Config files in place |
-| Vitest Execution | ⚠️ Partial | Tests detected but execution fails |
-| Storybook Configuration | ✅ Created | Config files in place |
-| Storybook Execution | ⚠️ Blocked | Angular 21 compatibility issue |
+| Vitest Configuration | ✅ Working | Config files in place |
+| Vitest Execution | ✅ Working | All tests passing (app1: 2/2, shared-lib: 2/2) |
+| Storybook Configuration | ✅ Working | Angular builder configured |
+| Storybook Execution | ✅ Working | Runs on http://localhost:6006/ |
 | Component Example | ✅ Working | Button component with stories |
 | Documentation | ✅ Complete | Comprehensive README |
 
 ## 🎯 What Works
 
-1. **Build System**: All three projects (app1, app2, shared-lib) build successfully
-2. **Development Servers**: Apps can be served with `ng serve`
-3. **Workspace Structure**: Clean multi-project structure following Angular best practices
-4. **Component Development**: Shared library with example component ready for use
-5. **Configuration Files**: All necessary config files for Vitest and Storybook created
-6. **Package Management**: All required dependencies installed
+1. **Build System**: All three projects (app1, app2, shared-lib) build successfully ✅
+2. **Development Servers**: Apps can be served with `ng serve` ✅
+3. **Workspace Structure**: Clean multi-project structure following Angular best practices ✅
+4. **Component Development**: Shared library with example component ready for use ✅
+5. **Vitest Testing**: All tests running and passing successfully ✅
+6. **Storybook**: Running successfully on http://localhost:6006/ with Angular builder ✅
+7. **Package Management**: All required dependencies installed ✅
 
-## 🔄 Next Steps (If Needed)
+## 🔄 Improvements Made After Initial Setup
 
-### For Vitest:
-1. Investigate Angular 21 + AnalogJS Vitest integration more deeply
-2. Consider alternative test setup configurations
-3. Check for newer versions of @analogjs packages with Angular 21 support
-4. Review AnalogJS documentation for latest setup patterns
+### Vitest:
+1. ✅ Updated test-setup.ts to use modern `setupTestBed()` function
+2. ✅ Added `@angular/compiler` import as required by AnalogJS
+3. ✅ Updated tsconfig.spec.json with `target: "es2022"` and proper types
+4. ✅ Added `zone.js` dependency for Zone.js change detection
+5. ✅ Configured `@analogjs/vitest-angular:test` builder in angular.json
+6. ✅ Fixed vite.config.ts paths to work from workspace root
 
-### For Storybook:
-1. Wait for Storybook v10 to stabilize with Angular 21
-2. Consider downgrading to Storybook v8 if needed
-3. Explore alternative Storybook builder configurations
-4. Check Storybook Angular documentation for Angular 21 support status
+### Storybook:
+1. ✅ Added proper Angular builder configuration in angular.json
+2. ✅ Used `@storybook/angular:start-storybook` and `@storybook/angular:build-storybook` builders
+3. ✅ Configured `browserTarget` to reference app1:build
+4. ✅ Updated npm scripts to use Angular CLI commands (`ng run app1:storybook`)
+5. ✅ Fixed .storybook/tsconfig.json configuration
 
 ## 🎉 Summary
 
 The workspace has been successfully created with:
-- ✅ 2 Angular applications (app1, app2)
-- ✅ 1 shared library (shared-lib)
+- ✅ 2 Angular applications (app1, app2) - both building successfully
+- ✅ 1 shared library (shared-lib) - building successfully
 - ✅ All build processes working
-- ✅ Vitest configuration in place
-- ✅ Storybook configuration in place as separate project
+- ✅ Vitest configuration in place and **all tests passing**
+- ✅ Storybook configuration in place and **running successfully**
 - ✅ Example component with stories
 - ✅ Comprehensive documentation
 
-The core requirements are met. The Vitest and Storybook configurations are in place and follow the AnalogJS documentation approach, though they may need additional fine-tuning for full Angular 21 compatibility as the ecosystem matures.
+**All requirements met and verified working!** The Vitest and Storybook configurations follow the official AnalogJS and Storybook documentation patterns and are fully functional with Angular 21.

@@ -11,8 +11,8 @@
     "test:vitest:app1": "vitest run --config=projects/app1/vite.config.ts",
     "test:vitest:app2": "vitest run --config=projects/app2/vite.config.ts",
     "test:vitest:lib": "vitest run --config=projects/shared-lib/vite.config.ts",
-    "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build -o dist/storybook"
+    "storybook": "ng run app1:storybook",
+    "build:storybook": "ng run app1:build-storybook"
   },
   "prettier": {
     "printWidth": 100,
@@ -36,7 +36,8 @@
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "^0.16.0"
   },
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.2.3",

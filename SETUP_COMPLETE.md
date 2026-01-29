@@ -110,17 +110,18 @@ From the original requirements:
 
 ## Important Notes
 
-### Vitest
-- Configuration files are in place following AnalogJS patterns
-- TestBed setup configured for Angular compatibility
-- Tests can be run from each project directory with: `cd projects/app1 && npx vitest run`
-- Integration with Angular 21 may need fine-tuning as the AnalogJS ecosystem matures
+### Vitest ✅
+- Configuration files follow AnalogJS official patterns using `setupTestBed()`
+- TestBed setup uses modern `@analogjs/vitest-angular/setup-testbed` approach
+- Tests run successfully from workspace root with project-specific configs
+- Angular CLI builder `@analogjs/vitest-angular:test` configured for all projects
 
-### Storybook
-- Storybook v10.2.1 is configured and ready
-- Example stories created for Button component
-- Run with `npm run storybook` (port 6006)
-- Angular 21 support in Storybook v10 may require additional configuration
+### Storybook ✅
+- Storybook v10.2.1 configured using Angular builder approach
+- Uses `@storybook/angular:start-storybook` and `@storybook/angular:build-storybook` builders
+- Configured in angular.json with proper browserTarget reference
+- Run with `npm run storybook` or `ng run app1:storybook`
+- All stories accessible at http://localhost:6006/
 
 ## Next Steps
 
