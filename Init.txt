@@ -1,0 +1,5 @@
+Please add ever promt here:
+
+Create a angular21 Workspace with two Apps and a library. Use vitest And storybook as described Here: https://analogjs.org/docs/integrations/storybook
+
+But use a separat Project for storybook in the angular.json. 
