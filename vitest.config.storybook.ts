@@ -43,9 +43,9 @@ export default defineConfig(async () => {
         instances: [{ browser: 'chromium' }],
       },
       setupFiles: [
-        '.storybook/compiler-preload.ts',
         '.storybook/vitest-setup.ts',
         '@storybook/addon-vitest/internal/setup-file',
+        '.storybook/compiler-preload.ts',
       ],
     },
   };

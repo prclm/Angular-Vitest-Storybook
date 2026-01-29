@@ -1,5 +1,5 @@
 diff --git a/node_modules/@storybook/addon-vitest/dist/vitest-plugin/test-utils.js b/node_modules/@storybook/addon-vitest/dist/vitest-plugin/test-utils.js
-index 14afe1e..0b64177 100644
+index 14afe1e..954ae8f 100644
 --- a/node_modules/@storybook/addon-vitest/dist/vitest-plugin/test-utils.js
 +++ b/node_modules/@storybook/addon-vitest/dist/vitest-plugin/test-utils.js
 @@ -69,7 +69,7 @@ var { getInitialGlobals } = server.commands, convertToFilePath = (url) => url.re
@@ -7,7 +7,7 @@ index 14afe1e..0b64177 100644
    (composedStory === void 0 || skipTags?.some((tag) => composedStory.tags.includes(tag))) && context.skip(), context.story = composedStory;
    let _task = context.task;
 -  _task.meta.storyId = storyId, _task.meta.componentPath = componentPath, _task.meta.componentName = componentName, await setViewport(composedStory.parameters, composedStory.globals), await composedStory.run(void 0), _task.meta.reports = composedStory.reporting.reports;
-+  _task.meta.storyId = storyId, _task.meta.componentPath = componentPath, _task.meta.componentName = componentName, await setViewport(composedStory.parameters, composedStory.globals), await composedStory.run(globalThis.globalProjectAnnotations?.renderToCanvas ? { renderToCanvas: globalThis.globalProjectAnnotations.renderToCanvas } : void 0), _task.meta.reports = composedStory.reporting.reports;
++  _task.meta.storyId = storyId, _task.meta.componentPath = componentPath, _task.meta.componentName = componentName, await setViewport(composedStory.parameters, composedStory.globals), composedStory.renderToCanvas || (globalThis.globalProjectAnnotations?.renderToCanvas && (composedStory.renderToCanvas = globalThis.globalProjectAnnotations.renderToCanvas)), await composedStory.run(void 0), _task.meta.reports = composedStory.reporting.reports;
  };
  export {
    convertToFilePath,
