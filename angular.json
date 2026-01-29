@@ -208,14 +208,6 @@
       "sourceRoot": ".storybook",
       "prefix": "app",
       "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {}
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {}
-        },
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {

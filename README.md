@@ -102,7 +102,7 @@ Configuration files:
 
 ### Known Limitations
 
-**Storybook 8 + Angular 21 Compatibility**: As of January 2026, Storybook 8 does not officially support Angular 21. The setup uses `--legacy-peer-deps` to install dependencies. The build process may require additional configuration or updates when official support is available.
+**Storybook 8 + Angular 21 Compatibility**: Currently, Storybook 8 does not officially support Angular 21. The setup uses `--legacy-peer-deps` to install dependencies. The build process may require additional configuration or updates when official support is available.
 
 To work around this, components in the shared library use inline templates and styles instead of external files for better compatibility with both Vitest and Storybook.
 
