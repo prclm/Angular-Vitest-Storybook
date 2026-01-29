@@ -1,0 +1,61 @@
+{
+  "name": "my-workspace",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:app1": "vitest run --config projects/app1/vitest.config.ts",
+    "test:app2": "vitest run --config projects/app2/vitest.config.ts",
+    "test:shared": "vitest run --config projects/shared/vitest.config.ts",
+    "storybook": "storybook dev -p 6006 --config-dir .storybook",
+    "build-storybook": "storybook build --config-dir .storybook -o dist/storybook"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "packageManager": "npm@10.8.2",
+  "dependencies": {
+    "@angular/common": "^21.1.0",
+    "@angular/compiler": "^21.1.0",
+    "@angular/core": "^21.1.0",
+    "@angular/forms": "^21.1.0",
+    "@angular/platform-browser": "^21.1.0",
+    "@angular/router": "^21.1.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@analogjs/vitest-angular": "^2.2.3",
+    "@angular/build": "^21.1.2",
+    "@angular/cli": "^21.1.2",
+    "@angular/compiler-cli": "^21.1.0",
+    "@angular/platform-browser-dynamic": "^21.1.2",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-links": "^8.6.15",
+    "@storybook/angular": "^8.6.15",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/test": "^8.6.15",
+    "@vitest/ui": "^4.0.18",
+    "jsdom": "^27.1.0",
+    "ng-packagr": "^21.1.0",
+    "storybook": "^8.6.15",
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.8"
+  }
+}
