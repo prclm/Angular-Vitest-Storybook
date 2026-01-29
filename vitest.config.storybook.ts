@@ -43,9 +43,8 @@ export default defineConfig(async () => {
         instances: [{ browser: 'chromium' }],
       },
       setupFiles: [
-        '.storybook/vitest-setup.ts',
+        '.storybook/browser-setup.ts',  // Browser-side init (runs in Playwright)
         '@storybook/addon-vitest/internal/setup-file',
-        '.storybook/compiler-preload.ts',
       ],
     },
   };
