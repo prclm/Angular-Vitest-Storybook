@@ -52,8 +52,7 @@
   - `npm run test:vitest:app1` - Test app1
   - `npm run test:vitest:app2` - Test app2
   - `npm run test:vitest:lib` - Test library
-
-- ✅ Added Vitest targets to angular.json for each project
+  - Note: Vitest targets removed from angular.json as they used incorrect builders
 
 ### 5. Storybook Integration
 - ✅ Installed Storybook dependencies:
@@ -65,10 +64,10 @@
   - `.storybook/preview.ts` - Preview configuration
   - `.storybook/tsconfig.json` - TypeScript configuration
 
-- ✅ Added Storybook as separate project in angular.json:
-  - Project name: `storybook`
-  - Build target: `ng run storybook:build`
-  - Serve target: `ng run storybook:serve`
+- ✅ Storybook configured via `.storybook/` directory and npm scripts:
+  - Storybook runs independently using its own build system
+  - Not added as separate Angular project (not needed for Storybook)
+  - Build and serve configured via npm scripts
 
 - ✅ Created example story:
   - `projects/shared-lib/src/lib/button/button.stories.ts`

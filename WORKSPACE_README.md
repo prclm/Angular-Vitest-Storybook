@@ -82,17 +82,19 @@ npm run build:storybook
 - Vitest configuration for library testing
 
 ### Storybook Project
-- Configured as a separate project in `angular.json`
-- Stories located in `projects/*/src/**/*.stories.ts`
-- Uses @storybook/angular framework
+- Storybook is configured via the `.storybook/` directory
+- Run using npm scripts: `npm run storybook` or `npm run build:storybook`
+- Stories pattern: `projects/**/*.stories.@(js|jsx|mjs|ts|tsx)`
+- Note: Storybook v10 has compatibility issues with Angular 21 that may require additional configuration
 
 ## Vitest Configuration
 
-Each project has its own `vite.config.ts`:
+Each project has its own `vite.config.ts` in its project directory:
 - Uses `@analogjs/vite-plugin-angular` for Angular support
 - JSdom environment for component testing
 - Setup files for TestBed initialization
 - Configured with project-specific tsconfig
+- Note: While configuration is in place, TestBed initialization may need additional setup for Angular 21
 
 ### Test Setup Files
 - `projects/app1/src/test-setup.ts`
@@ -120,10 +122,12 @@ Key dependencies include:
 ## Notes
 
 ### Vitest Integration
-Vitest is configured using the AnalogJS integration which provides:
+Vitest configuration is in place following the AnalogJS integration approach which is designed to provide:
 - Zone.js setup for Angular
 - TestBed support
 - Component testing capabilities
+
+Note: The configuration files are created but may require additional fine-tuning for full Angular 21 compatibility.
 
 ### Storybook Configuration
 - Storybook v10.2.1 requires specific Angular builder configuration

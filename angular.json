@@ -66,12 +66,6 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
-        },
-        "vitest": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "command": "npx vitest run --config=projects/app1/vite.config.ts"
-          }
         }
       }
     },
@@ -135,12 +129,6 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
-        },
-        "vitest": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "command": "npx vitest run --config=projects/app2/vite.config.ts"
-          }
         }
       }
     },
@@ -166,32 +154,6 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/shared-lib/tsconfig.spec.json"
-          }
-        },
-        "vitest": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "command": "npx vitest run --config=projects/shared-lib/vite.config.ts"
-          }
-        }
-      }
-    },
-    "storybook": {
-      "projectType": "application",
-      "root": "projects/storybook",
-      "sourceRoot": "projects/storybook",
-      "prefix": "storybook",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "command": "npx storybook build -o dist/storybook"
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "command": "npx storybook dev -p 6006"
           }
         }
       }
