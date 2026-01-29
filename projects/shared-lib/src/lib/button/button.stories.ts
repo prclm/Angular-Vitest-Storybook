@@ -5,7 +5,6 @@ import { Button } from './button';
 const meta: Meta<Button> = {
   title: 'Components/Button',
   component: Button,
-  tags: ['autodocs'],
   argTypes: {
     label: { control: 'text' },
     primary: { control: 'boolean' },
@@ -24,6 +23,9 @@ export const Primary: Story = {
     label: 'Button',
     primary: true,
   },
+  render: (args) => ({
+    props: args,
+  }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');

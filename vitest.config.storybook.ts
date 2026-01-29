@@ -3,7 +3,6 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
-import angular from '@analogjs/vite-plugin-angular';
 
 // More info at: https://storybook.js.org/docs/writing-tests/vitest-addon
 export default defineConfig(async () => {
@@ -14,9 +13,6 @@ export default defineConfig(async () => {
 
   return {
     plugins: [
-      angular({
-        tsconfig: 'projects/app1/tsconfig.spec.json',
-      }),
       // The plugin will run tests for the stories defined in your Storybook config
       // See options at: https://storybook.js.org/docs/writing-tests/vitest-addon#storybooktest
       ...storybookPlugin,
