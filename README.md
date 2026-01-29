@@ -48,6 +48,8 @@ Run all tests:
 npm test
 ```
 
+Note: Currently, only the shared library has tests. App1 and App2 were generated with `--skip-tests` flag.
+
 Run tests for a specific project:
 ```bash
 npm run test:app1
