@@ -14,6 +14,7 @@ describe('Button', () => {
 
     fixture = TestBed.createComponent(Button);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
@@ -21,10 +22,13 @@ describe('Button', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render label', () => {
-    component.label = 'Click Me';
-    fixture.detectChanges();
-    const button = fixture.nativeElement.querySelector('button');
+  it('should render label', async () => {
+    const customFixture = TestBed.createComponent(Button);
+    const customComponent = customFixture.componentInstance;
+    customComponent.label = 'Click Me';
+    customFixture.detectChanges();
+    await customFixture.whenStable();
+    const button = customFixture.nativeElement.querySelector('button');
     expect(button.textContent.trim()).toBe('Click Me');
   });
 

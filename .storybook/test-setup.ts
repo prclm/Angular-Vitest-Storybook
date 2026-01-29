@@ -1,5 +1,4 @@
-import 'zone.js';
-import 'zone.js/testing';
+import '@analogjs/vitest-angular/setup-zone';
 import { getTestBed } from '@angular/core/testing';
 import {
   BrowserDynamicTestingModule,

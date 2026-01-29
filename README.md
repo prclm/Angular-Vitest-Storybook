@@ -1,59 +1,125 @@
-# MyWorkspace
+# Angular 21 Workspace with Vitest and Storybook
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+This is an Angular 21 workspace configured with multiple applications, a shared library, Vitest for testing, and Storybook for component development.
 
-## Development server
+## Project Structure
 
-To start a local development server, run:
+- **app1**: First Angular application
+- **app2**: Second Angular application  
+- **shared**: Shared component library
+- **storybook**: Separate Storybook project for component documentation
 
-```bash
-ng serve
-```
+## Technologies
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Angular 21**: Latest version of Angular framework
+- **Vitest**: Modern, fast unit testing framework
+- **Storybook 8**: Component development and documentation tool
+- **@analogjs/vitest-angular**: Angular integration for Vitest
 
-## Code scaffolding
+## Getting Started
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Install Dependencies
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
+### Development Servers
 
-To build the project run:
-
+Run application 1:
 ```bash
-ng build
+npm start -- --project=app1
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
+Run application 2:
 ```bash
-ng test
+npm start -- --project=app2
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
+Run Storybook:
 ```bash
-ng e2e
+npm run storybook
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Testing
 
-## Additional Resources
+Run all tests:
+```bash
+npm test
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Run tests for a specific project:
+```bash
+npm run test:app1
+npm run test:app2
+npm run test:shared
+```
+
+Run tests in watch mode:
+```bash
+npm run test:watch
+```
+
+Run tests with UI:
+```bash
+npm run test:ui
+```
+
+### Building
+
+Build all projects:
+```bash
+npm run build
+```
+
+Build Storybook:
+```bash
+npm run build-storybook
+```
+
+## Vitest Configuration
+
+Each project has its own `vitest.config.ts` file:
+- `/vitest.config.ts` - Root configuration
+- `/projects/app1/vitest.config.ts` - App1 tests
+- `/projects/app2/vitest.config.ts` - App2 tests
+- `/projects/shared/vitest.config.ts` - Library tests
+- `/.storybook/vitest.config.ts` - Storybook tests
+
+Test setup files are located at:
+- `/projects/app1/src/test-setup.ts`
+- `/projects/app2/src/test-setup.ts`
+- `/projects/shared/src/test-setup.ts`
+- `/.storybook/test-setup.ts`
+
+## Storybook Configuration
+
+Storybook is configured as a separate project in `angular.json` under the "storybook" key.
+
+Configuration files:
+- `/.storybook/main.ts` - Main Storybook configuration
+- `/.storybook/preview.ts` - Preview configuration
+
+### Known Limitations
+
+**Storybook 8 + Angular 21 Compatibility**: As of January 2026, Storybook 8 does not officially support Angular 21. The setup uses `--legacy-peer-deps` to install dependencies. The build process may require additional configuration or updates when official support is available.
+
+To work around this, components in the shared library use inline templates and styles instead of external files for better compatibility with both Vitest and Storybook.
+
+## Example Component
+
+The shared library includes a Button component demonstrating:
+- Component with inputs and outputs
+- Unit tests with Vitest
+- Storybook stories
+
+Location: `/projects/shared/src/lib/button/`
+
+## Project Configuration
+
+The workspace is configured in `angular.json` with:
+- Two applications (app1, app2)
+- One shared library (shared)
+- One Storybook project (storybook)
+
+Each project can be built, served, and tested independently.
