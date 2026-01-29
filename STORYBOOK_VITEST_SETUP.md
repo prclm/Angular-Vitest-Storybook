@@ -1,39 +1,83 @@
-# Storybook Vitest Integration
+# Storybook Vitest Integration with Analog.js
 
-This document describes the setup of the @storybook/addon-vitest integration for running Storybook play() functions as vitest tests.
+This document describes the setup of the @storybook/addon-vitest integration using @analogjs/storybook-angular for running Storybook play() functions as vitest tests with Angular standalone components.
+
+## Why Analog.js?
+
+The official `@storybook/angular` uses Webpack, which doesn't integrate well with Vitest's browser mode. Analog.js provides `@analogjs/storybook-angular`, a Vite-powered alternative that properly handles Angular 21 standalone components in a Vite/Vitest environment.
 
 ## Installation
 
 The following packages were installed:
 
 ```bash
+npm install --save-dev @analogjs/storybook-angular@2.2.3
+npm install --save-dev @analogjs/vitest-angular@2.2.3
 npm install --save-dev @storybook/addon-vitest@10.2.1
 npm install --save-dev @vitest/browser@4.0.18
 npm install --save-dev @vitest/browser-playwright
 npm install --save-dev @storybook/test@8.6.15 --legacy-peer-deps
 npm install --save-dev @angular-devkit/build-angular --legacy-peer-deps
 npm install --save-dev playwright
+npx playwright install chromium --with-deps
 ```
 
 ## Configuration
 
 ### 1. Storybook Main Configuration (.storybook/main.ts)
 
-Added the vitest addon to the addons array:
+Updated to use @analogjs/storybook-angular framework:
 
 ```typescript
-addons: ['@storybook/addon-vitest'],
+import type { StorybookConfig } from '@analogjs/storybook-angular';
+
+const config: StorybookConfig = {
+  stories: ['../projects/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  addons: ['@storybook/addon-vitest'],
+  framework: {
+    name: '@analogjs/storybook-angular',
+    options: {},
+  },
+};
+
+export default config;
 ```
 
-### 2. Vitest Configuration (vitest.config.storybook.ts)
+### 2. Angular.json Updates
 
-Created a separate vitest configuration file for storybook tests:
+Updated Storybook builders to use Analog.js:
+
+```json
+{
+  "storybook": {
+    "builder": "@analogjs/storybook-angular:start-storybook",
+    "options": {
+      "configDir": ".storybook",
+      "compodoc": false,
+      "port": 6006
+    }
+  },
+  "build-storybook": {
+    "builder": "@analogjs/storybook-angular:build-storybook",
+    "options": {
+      "configDir": ".storybook",
+      "compodoc": false,
+      "outputDir": "dist/storybook"
+    }
+  }
+}
+```
+
+### 3. Vitest Configuration (vitest.config.storybook.ts)
+
+Uses @analogjs/vite-plugin-angular with the storybook test plugin:
 
 ```typescript
 import path from 'node:path';
 import { defineConfig } from 'vite';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
+import angular from '@analogjs/vite-plugin-angular';
 
 export default defineConfig(async () => {
   const storybookPlugin = await storybookTest({ 
@@ -43,8 +87,15 @@ export default defineConfig(async () => {
 
   return {
     plugins: [
+      angular({
+        tsconfig: '.storybook/tsconfig.json',
+        jit: true,
+      }),
       ...storybookPlugin,
     ],
+    optimizeDeps: {
+      include: ['@angular/compiler'],
+    },
     test: {
       name: 'storybook',
       browser: {
@@ -54,6 +105,7 @@ export default defineConfig(async () => {
         instances: [{ browser: 'chromium' }],
       },
       setupFiles: [
+        '.storybook/compiler-preload.ts',
         '.storybook/vitest-setup.ts',
         '@storybook/addon-vitest/internal/setup-file',
       ],
@@ -62,86 +114,65 @@ export default defineConfig(async () => {
 });
 ```
 
-### 3. Vitest Setup File (.storybook/vitest-setup.ts)
+### 4. Vitest Setup File (.storybook/vitest-setup.ts)
 
-Created a setup file to initialize project annotations:
+Uses Analog.js setup utilities:
 
 ```typescript
 import '@angular/compiler';
-import { setProjectAnnotations } from '@storybook/angular';
+import '@analogjs/vitest-angular/setup-zone';
+import { setupTestBed } from '@analogjs/vitest-angular/setup-testbed';
+import { setProjectAnnotations } from '@analogjs/storybook-angular';
 import * as projectAnnotations from './preview';
 
+// Setup Angular TestBed for browser mode
+setupTestBed({
+  zoneless: false,
+  browserMode: true,
+});
+
+// Apply project-level annotations
 const annotations = setProjectAnnotations([projectAnnotations]);
 globalThis.globalProjectAnnotations = annotations;
 ```
 
-### 4. Workspace Configuration (vitest.workspace.ts)
+### 5. Compiler Preload (.storybook/compiler-preload.ts)
 
-Created a workspace configuration to run multiple test suites:
+Ensures Angular compiler loads first:
 
 ```typescript
-import path from 'node:path';
-import { defineWorkspace } from 'vitest/config';
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
-import { playwright } from '@vitest/browser-playwright';
-import angular from '@analogjs/vite-plugin-angular';
-
-export default defineWorkspace(async () => {
-  const storybookPlugin = await storybookTest({ 
-    configDir: path.join(__dirname, '.storybook') 
-  });
-
-  return [
-    'projects/app1/vite.config.ts',
-    'projects/app2/vite.config.ts',
-    'projects/shared-lib/vite.config.ts',
-    {
-      plugins: [
-        angular({
-          tsconfig: 'projects/app1/tsconfig.spec.json',
-        }),
-        ...storybookPlugin,
-      ],
-      test: {
-        name: 'storybook',
-        browser: {
-          enabled: true,
-          headless: true,
-          provider: playwright(),
-          instances: [{ browser: 'chromium' }],
-        },
-        setupFiles: ['.storybook/vitest-setup.ts'],
-      },
-    },
-  ];
-});
+// Pre-load Angular compiler before anything else
+import '@angular/compiler';
 ```
 
-### 5. Package.json Scripts
-
-Added npm scripts for running storybook tests:
+### 6. Package.json Scripts
 
 ```json
 {
   "scripts": {
     "test:storybook": "vitest run --config=vitest.config.storybook.ts",
-    "test:storybook:watch": "vitest --config=vitest.config.storybook.ts"
+    "test:storybook:watch": "vitest --config=vitest.config.storybook.ts",
+    "storybook": "ng run app1:storybook",
+    "build:storybook": "ng run app1:build-storybook"
   }
 }
 ```
 
 ## Story Example with Play Function
 
-Updated the button stories to include play functions:
+Stories use @analogjs/storybook-angular types and @storybook/test utilities:
 
 ```typescript
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@analogjs/storybook-angular';
 import { expect, within } from '@storybook/test';
 import { Button } from './button';
 
 const meta: Meta<Button> = {
   title: 'Components/Button',
   component: Button,
+  render: (args) => ({
+    props: args,
+  }),
   argTypes: {
     label: { control: 'text' },
     primary: { control: 'boolean' },
@@ -160,9 +191,6 @@ export const Primary: Story = {
     label: 'Button',
     primary: true,
   },
-  render: (args) => ({
-    props: args,
-  }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
@@ -172,50 +200,81 @@ export const Primary: Story = {
 };
 ```
 
+## Running Storybook
+
+Storybook UI works correctly with the Analog.js integration:
+
+```bash
+npm run storybook
+# Opens at http://localhost:6006/
+```
+
+The Button component renders properly in Storybook with all variants visible.
+
 ## Running Tests
 
-To run all storybook tests:
+To attempt running storybook tests:
 
 ```bash
 npm run test:storybook
 ```
 
-To run in watch mode:
-
-```bash
-npm run test:storybook:watch
-```
-
 ## Current Status
 
-The vitest plugin successfully:
-- ✅ Discovers story files based on Storybook configuration
-- ✅ Creates test cases for each story with a play() function  
-- ✅ Launches Playwright browser for testing
-- ✅ Runs 4 test cases (one for each story: Primary, Secondary, Large, Small)
+### ✅ What Works:
 
-### Known Issue
+- **Storybook UI**: Fully functional with @analogjs/storybook-angular
+- **Component Rendering**: Angular 21 standalone components render correctly in Storybook
+- **Story Discovery**: The vitest plugin discovers all story files
+- **Test Generation**: Creates test cases for stories with play() functions
+- **Browser Launch**: Playwright successfully launches for testing
 
-The tests are currently failing with an Angular rendering error:
+### ❌ Current Limitation:
+
+The tests fail with a JIT compilation error:
+
 ```
-InvalidCharacterError: Failed to execute 'createElement' on 'Document': The tag name provided ('') is not a valid name.
+Error: The injectable '_PlatformLocation' needs to be compiled using the JIT compiler, 
+but '@angular/compiler' is not available.
 ```
 
-This error occurs because the Angular renderer (`_DocsRenderer`) cannot properly extract the component selector. This is a known compatibility issue between:
-- Storybook Angular 10.2.1  
-- @storybook/addon-vitest 10.2.1
-- Angular 21.1.0 standalone components
+**Root Cause**: The issue occurs because:
+1. Vite/Storybook pre-bundles Angular dependencies during the optimization phase
+2. These pre-bundled modules are cached in `node_modules/.cache/storybook/`
+3. When tests run, these cached Angular modules load before the @angular/compiler
+4. Angular's platform initialization then fails because JIT compiler isn't available yet
 
-### Potential Solutions
+**Attempted Solutions**:
+- ✅ Moved to @analogjs/storybook-angular (Vite-based)
+- ✅ Added @analogjs/vitest-angular for proper TestBed setup  
+- ✅ Created compiler preload file
+- ✅ Configured `jit: true` in Angular plugin
+- ✅ Added `@angular/compiler` to optimizeDeps
+- ⏳ Still investigating: Module loading order in Vite's dep pre-bundling
 
-1. **Wait for official Angular support**: The addon-vitest is primarily designed for React, Vue, and Svelte. Angular support may need improvements in future versions.
+### Next Steps
 
-2. **Use Storybook Test Runner instead**: Consider using `@storybook/test-runner` (Jest + Playwright) which has better Angular support.
+This appears to be a fundamental limitation with how Vite pre-bundles dependencies for the browser test environment. Potential solutions being investigated:
 
-3. **Simplify component registration**: The issue may be related to how Angular components are registered with Storybook when using the vitest plugin.
+1. **Disable dependency pre-bundling** for Angular modules (may impact performance)
+2. **Use a custom Vite plugin** to ensure compiler loads first
+3. **Wait for upstream fixes** in @storybook/addon-vitest for better Angular support
+4. **Alternative: Use @storybook/test-runner** (Jest + Playwright) which has better Angular support
+
+## Alternative: Storybook Test Runner
+
+Until the Vitest integration is fully resolved, you can use the official test runner:
+
+```bash
+npm install --save-dev @storybook/test-runner
+npx storybook@latest test-runner
+```
+
+This uses Jest and Playwright, which don't have the same module loading issues.
 
 ## References
 
-- [Storybook Vitest Addon Documentation](https://storybook.js.org/docs/writing-tests/vitest-addon)
-- [GitHub: @storybook/addon-vitest](https://github.com/storybookjs/storybook/tree/next/code/addons/vitest)
+- [Analog.js Documentation](https://analogjs.org)
+- [Analog.js Storybook Integration](https://analogjs.org/docs/packages/storybook-angular/overview)
+- [Storybook Vitest Addon](https://storybook.js.org/docs/writing-tests/vitest-addon)
 - [Vitest Browser Mode](https://vitest.dev/guide/browser)
