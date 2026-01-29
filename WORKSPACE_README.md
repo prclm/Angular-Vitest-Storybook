@@ -6,11 +6,10 @@ This is an Angular 21 workspace with multiple applications, a shared library, Vi
 
 ```
 projects/
-├── app1/              # First Angular application
+├── app1/              # First Angular application (with Storybook integration)
 ├── app2/              # Second Angular application
-├── shared-lib/        # Shared component library
-│   └── src/lib/button/  # Example Button component
-└── storybook/         # Storybook project (separate in angular.json)
+└── shared-lib/        # Shared component library
+    └── src/lib/button/  # Example Button component
 ```
 
 ## Features
@@ -164,10 +163,9 @@ Tests can be run using npm scripts or the Angular CLI with the `@analogjs/vitest
 ## Project Structure in angular.json
 
 The workspace is configured with:
-- `app1`: Application project with build, serve, test, and vitest targets
-- `app2`: Application project with build, serve, test, and vitest targets
-- `shared-lib`: Library project with build, test, and vitest targets
-- `storybook`: Separate project with build and serve targets for Storybook
+- `app1`: Application project with build, serve, test (Vitest), storybook, and build-storybook targets
+- `app2`: Application project with build, serve, and test (Vitest) targets
+- `shared-lib`: Library project with build and test (Vitest) targets
 
 This setup demonstrates best practices for:
 - Multi-application workspaces

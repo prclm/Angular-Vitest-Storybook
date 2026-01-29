@@ -105,8 +105,8 @@ From the original requirements:
 ✅ **Two Applications** - app1 and app2 both building successfully  
 ✅ **One Library** - shared-lib with example component  
 ✅ **Vitest Integration** - Following AnalogJS documentation approach  
-✅ **Storybook Integration** - Following AnalogJS documentation approach  
-✅ **Separate Storybook Configuration** - Configured via .storybook/ directory  
+✅ **Storybook Integration** - Following Storybook Angular documentation approach  
+✅ **Storybook Configuration** - Integrated into app1 using Angular builders  
 
 ## Important Notes
 
