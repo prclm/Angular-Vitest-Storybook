@@ -14,8 +14,8 @@ setupTestBed({
 });
 
 // Apply project-level annotations (configurations) to your stories
-// The testing module from @analogjs/storybook-angular automatically includes
-// renderToCanvas and render functions in the annotations
+// The preview.ts now exports render and renderToCanvas from @analogjs/storybook-angular/testing
+// so they'll be included in the annotations automatically
 const annotations = setProjectAnnotations([projectAnnotations]);
 
 // Make annotations available globally for the addon

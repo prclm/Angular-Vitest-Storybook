@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/angular';
+import { render, renderToCanvas } from '@analogjs/storybook-angular/testing';
 
 const preview: Preview = {
   parameters: {
@@ -10,5 +11,8 @@ const preview: Preview = {
     },
   },
 };
+
+// Export render functions so they're included in project annotations
+export { render, renderToCanvas };
 
 export default preview;
