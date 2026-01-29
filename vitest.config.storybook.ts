@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 import angular from '@analogjs/vite-plugin-angular';
+import { angularCompilerFirst } from './.storybook/angular-compiler-plugin';
 
 // More info at: https://storybook.js.org/docs/writing-tests/vitest-addon
 export default defineConfig(async () => {
@@ -14,6 +15,8 @@ export default defineConfig(async () => {
 
   return {
     plugins: [
+      // Custom plugin to ensure Angular compiler loads first
+      angularCompilerFirst(),
       angular({
         tsconfig: '.storybook/tsconfig.json',
         jit: true,
@@ -24,6 +27,7 @@ export default defineConfig(async () => {
     ],
     optimizeDeps: {
       include: ['@angular/compiler'],
+      exclude: ['@angular/common', '@angular/platform-browser', '@angular/platform-browser-dynamic'],
     },
     test: {
       name: 'storybook',
