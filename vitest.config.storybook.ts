@@ -20,12 +20,19 @@ export default defineConfig(async () => {
       angular({
         tsconfig: '.storybook/tsconfig.json',
         jit: true,
+        // Force the compiler to be available
+        advanced: {
+          compilerOptions: {
+            compilationMode: 'full',
+          },
+        },
       }),
       // The plugin will run tests for the stories defined in your Storybook config
       // See options at: https://storybook.js.org/docs/writing-tests/vitest-addon#storybooktest
       ...storybookPlugin,
     ],
     optimizeDeps: {
+      // Force include compiler so it's in the bundle
       include: ['@angular/compiler'],
       exclude: [
         '@angular/common',
@@ -33,6 +40,8 @@ export default defineConfig(async () => {
         '@angular/platform-browser-dynamic',
         '@storybook/addon-vitest/internal/test-utils',
       ],
+      // Don't pre-bundle, let modules load naturally
+      disabled: false,
     },
     test: {
       name: 'storybook',

@@ -1,3 +1,4 @@
+import '@angular/compiler';
 import type { Meta, StoryObj } from '@analogjs/storybook-angular';
 import { expect, within } from '@storybook/test';
 import { Button } from './button';

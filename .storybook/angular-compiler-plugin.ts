@@ -3,10 +3,10 @@ import type { Plugin } from 'vite';
 /**
  * Custom Vite plugin to ensure @angular/compiler loads before other Angular modules.
  * 
- * This plugin intercepts module resolution and forces @angular/compiler to be loaded
- * as a dependency of any Angular module that requires JIT compilation.
+ * This plugin transforms Angular modules to inject the compiler import at the top,
+ * ensuring it's available before any JIT compilation occurs.
  * 
- * This solves the issue where Vite pre-bundles Angular dependencies before the compiler
+ * This solves the issue where Vite processes Angular dependencies before the compiler
  * is available, causing JIT compilation errors.
  */
 export function angularCompilerFirst(): Plugin {
@@ -30,23 +30,28 @@ export function angularCompilerFirst(): Plugin {
       };
     },
 
-    resolveId(id, importer) {
-      // If any Angular module is being imported, ensure compiler is loaded first
-      if (id.startsWith('@angular/') && id !== '@angular/compiler' && importer) {
-        // Force compiler to be a dependency
-        return null; // Continue with normal resolution
+    transform(code, id) {
+      // Inject compiler import at the top of Angular modules (except compiler itself)
+      if (id.includes('node_modules/@angular/') && 
+          !id.includes('@angular/compiler') &&
+          !id.includes('.d.ts') &&
+          !code.includes('import "@angular/compiler"')) {
+        return {
+          code: `import "@angular/compiler";\n${code}`,
+          map: null
+        };
       }
-      return null;
-    },
-
-    load(id) {
-      // For Angular modules, inject compiler import at the top
-      if (id.includes('@angular/') && 
-          !id.includes('@angular/compiler') && 
-          !id.includes('node_modules/.cache')) {
-        // Let the module load normally
-        return null;
+      
+      // Also inject for @analogjs/storybook-angular modules
+      if (id.includes('node_modules/@analogjs/storybook-angular') &&
+          !id.includes('.d.ts') &&
+          !code.includes('import "@angular/compiler"')) {
+        return {
+          code: `import "@angular/compiler";\n${code}`,
+          map: null
+        };
       }
+      
       return null;
     },
 
