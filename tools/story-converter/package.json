@@ -1,0 +1,20 @@
+{
+  "name": "@angular-vitest-storybook/story-converter",
+  "version": "1.0.0",
+  "description": "Convert Storybook stories to Vitest tests",
+  "bin": {
+    "convert-stories": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "convert": "node dist/cli.js"
+  },
+  "dependencies": {
+    "glob": "^10.3.10",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6"
+  }
+}

@@ -17,7 +17,10 @@
     "build:storybook": "ng run app1:build-storybook",
     "postinstall": "patch-package",
     "test-storybook": "test-storybook",
-    "test-storybook:ci": "test-storybook --url http://localhost:6006"
+    "test-storybook:ci": "test-storybook --url http://localhost:6006",
+    "convert-stories": "node tools/story-converter/dist/cli.js",
+    "convert-stories:dry-run": "npm run convert-stories -- --dry-run --verbose",
+    "convert-stories:force": "npm run convert-stories -- --force --verbose"
   },
   "prettier": {
     "printWidth": 100,
