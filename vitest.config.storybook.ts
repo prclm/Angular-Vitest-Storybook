@@ -1,10 +1,13 @@
 /// <reference types="vitest" />
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { defineConfig } from 'vite';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 import angular from '@analogjs/vite-plugin-angular';
 import { angularCompilerFirst } from './.storybook/angular-compiler-plugin';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 // More info at: https://storybook.js.org/docs/writing-tests/vitest-addon
 export default defineConfig(async () => {
@@ -32,15 +35,15 @@ export default defineConfig(async () => {
       ...storybookPlugin,
     ],
     optimizeDeps: {
-      // Force include compiler so it's in the bundle
-      include: ['@angular/compiler'],
+      // Angular modules excluded from pre-bundling by angular-compiler-plugin
+      // This ensures proper loading order for JIT compilation
       exclude: [
         '@angular/common',
         '@angular/platform-browser',
         '@angular/platform-browser-dynamic',
         '@storybook/addon-vitest/internal/test-utils',
       ],
-      // Don't pre-bundle, let modules load naturally
+      // Optimization enabled to improve startup performance
       disabled: false,
     },
     test: {

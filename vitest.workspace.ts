@@ -1,8 +1,11 @@
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { defineWorkspace } from 'vitest/config';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 import angular from '@analogjs/vite-plugin-angular';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 // More info at: https://storybook.js.org/docs/writing-tests/vitest-addon
 export default defineWorkspace(async () => {
