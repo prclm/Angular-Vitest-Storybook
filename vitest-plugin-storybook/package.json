@@ -1,0 +1,30 @@
+{
+  "name": "@angular-vitest-storybook/vitest-plugin-storybook",
+  "version": "1.0.0",
+  "description": "Vitest plugin for on-the-fly story-to-test conversion",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "vitest",
+    "plugin",
+    "storybook",
+    "testing",
+    "angular"
+  ],
+  "dependencies": {
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "vite": "^5.0.0"
+  },
+  "peerDependencies": {
+    "vitest": ">=0.34.0",
+    "vite": ">=4.0.0"
+  }
+}

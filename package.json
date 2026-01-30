@@ -20,7 +20,9 @@
     "test-storybook:ci": "test-storybook --url http://localhost:6006",
     "convert-stories": "node tools/story-converter/dist/cli.js",
     "convert-stories:dry-run": "npm run convert-stories -- --dry-run --verbose",
-    "convert-stories:force": "npm run convert-stories -- --force --verbose"
+    "convert-stories:force": "npm run convert-stories -- --force --verbose",
+    "test:stories:plugin": "vitest run --config=vitest.config.plugin.ts",
+    "test:stories:plugin:watch": "vitest --config=vitest.config.plugin.ts"
   },
   "prettier": {
     "printWidth": 100,
