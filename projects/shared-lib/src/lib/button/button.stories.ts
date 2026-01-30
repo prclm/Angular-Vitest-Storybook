@@ -1,4 +1,3 @@
-import '@angular/compiler';
 import type { Meta, StoryObj } from '@analogjs/storybook-angular';
 import { expect, within } from '@storybook/test';
 import { Button } from './button';
@@ -27,9 +26,6 @@ export const Primary: Story = {
     label: 'Button',
     primary: true,
   },
-  render: (args) => ({
-    props: args,
-  }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');

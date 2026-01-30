@@ -1,6 +1,4 @@
-// Browser-side setup file that runs in the Playwright browser context
-// This must set up globalProjectAnnotations which the vitest addon expects
-
+// Browser-side setup file for Vitest browser mode
 import '@angular/compiler';
 import '@analogjs/vitest-angular/setup-zone';
 import { setupTestBed } from '@analogjs/vitest-angular/setup-testbed';
@@ -13,11 +11,6 @@ setupTestBed({
   browserMode: true,
 });
 
-// Apply project-level annotations (configurations) to your stories
+// Apply project annotations and make available globally
 const annotations = setProjectAnnotations([projectAnnotations]);
-
-// Make annotations available globally for @storybook/addon-vitest
 globalThis.globalProjectAnnotations = annotations;
-
-console.log('[BROWSER-SETUP] globalProjectAnnotations set');
-console.log('[BROWSER-SETUP] renderToCanvas type:', typeof annotations.renderToCanvas);

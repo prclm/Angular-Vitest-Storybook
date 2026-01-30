@@ -3,11 +3,11 @@ import type { Plugin } from 'vite';
 /**
  * Custom Vite plugin to ensure @angular/compiler loads before other Angular modules.
  * 
- * This plugin transforms Angular modules to inject the compiler import at the top,
- * ensuring it's available before any JIT compilation occurs.
+ * This plugin:
+ * 1. Excludes Angular modules from Vite's dependency pre-bundling
+ * 2. Injects compiler import via HTML transformation
  * 
- * This solves the issue where Vite processes Angular dependencies before the compiler
- * is available, causing JIT compilation errors.
+ * This solves the JIT compilation error where Angular modules load before the compiler.
  */
 export function angularCompilerFirst(): Plugin {
   return {
@@ -25,34 +25,10 @@ export function angularCompilerFirst(): Plugin {
             '@angular/common',
             '@angular/platform-browser',
             '@angular/platform-browser-dynamic',
+            '@angular/compiler',
           ],
         },
       };
-    },
-
-    transform(code, id) {
-      // Inject compiler import at the top of Angular modules (except compiler itself)
-      if (id.includes('node_modules/@angular/') && 
-          !id.includes('@angular/compiler') &&
-          !id.includes('.d.ts') &&
-          !code.includes('import "@angular/compiler"')) {
-        return {
-          code: `import "@angular/compiler";\n${code}`,
-          map: null
-        };
-      }
-      
-      // Also inject for @analogjs/storybook-angular modules
-      if (id.includes('node_modules/@analogjs/storybook-angular') &&
-          !id.includes('.d.ts') &&
-          !code.includes('import "@angular/compiler"')) {
-        return {
-          code: `import "@angular/compiler";\n${code}`,
-          map: null
-        };
-      }
-      
-      return null;
     },
 
     transformIndexHtml(html) {
