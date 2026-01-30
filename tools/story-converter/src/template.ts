@@ -33,11 +33,10 @@ function generateImports(storyPath: string, componentName: string): string {
   return `// Auto-generated test file from stories
 // DO NOT EDIT - Regenerate using: npm run convert-stories
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { ${componentName} } from './${componentFileName}';
-import * as Stories from './${storyImportPath}';
-import { within } from '@storybook/test';`;
+import * as Stories from './${storyImportPath}';`;
 }
 
 function getRelativeImportPath(filePath: string): string {

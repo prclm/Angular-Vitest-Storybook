@@ -37,19 +37,16 @@ export function angularCompilerFirst(): Plugin {
     transformIndexHtml(html) {
       // Inject compiler script tag at the top of the HTML document.
       // This ensures the compiler loads before any Angular module requests.
-      return {
-        html,
-        tags: [
-          {
-            tag: 'script',
-            attrs: {
-              type: 'module',
-            },
-            children: `import '@angular/compiler';`,
-            injectTo: 'head-prepend',
+      return [
+        {
+          tag: 'script',
+          attrs: {
+            type: 'module',
           },
-        ],
-      };
+          children: `import '@angular/compiler';`,
+          injectTo: 'head-prepend',
+        },
+      ];
     },
   };
 }

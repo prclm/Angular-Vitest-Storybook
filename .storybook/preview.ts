@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/angular';
+import type { Preview } from '@analogjs/storybook-angular';
 import { render, renderToCanvas } from '@analogjs/storybook-angular/testing';
 
 const preview: Preview = {

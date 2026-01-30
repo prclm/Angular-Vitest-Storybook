@@ -5,6 +5,7 @@
 
 import type { Plugin } from 'vite';
 import * as path from 'path';
+import * as micromatch from 'micromatch';
 import { parseStoryFile } from './parse';
 import { generateTestCode } from './transform';
 
@@ -50,6 +51,15 @@ export function vitestStorybookPlugin(options: StoryPluginOptions = {}): Plugin 
 
       // Check if file matches include/exclude patterns
       const relativePath = path.relative(process.cwd(), id);
+      
+      // Apply include/exclude patterns
+      if (!micromatch.isMatch(relativePath, include)) {
+        return null;
+      }
+      
+      if (micromatch.isMatch(relativePath, exclude)) {
+        return null;
+      }
       
       log(`Transforming story file: ${relativePath}`);
 

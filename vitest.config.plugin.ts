@@ -15,7 +15,13 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    environment: 'jsdom',
+    // Use browser mode instead of jsdom for proper Angular support
+    browser: {
+      enabled: true,
+      name: 'chromium',
+      provider: 'playwright',
+      headless: true,
+    },
     setupFiles: ['./.storybook/browser-setup.ts'],
     include: ['**/*.stories.ts'], // Include story files as tests
   },
