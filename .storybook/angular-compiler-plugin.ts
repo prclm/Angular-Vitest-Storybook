@@ -4,10 +4,13 @@ import type { Plugin } from 'vite';
  * Custom Vite plugin to ensure @angular/compiler loads before other Angular modules.
  * 
  * This plugin:
- * 1. Excludes Angular modules from Vite's dependency pre-bundling
- * 2. Injects compiler import via HTML transformation
+ * 1. Excludes Angular modules from Vite's dependency pre-bundling to prevent
+ *    them from being cached without the compiler
+ * 2. Injects a compiler import script tag at the top of the HTML document
  * 
- * This solves the JIT compilation error where Angular modules load before the compiler.
+ * This solves the JIT compilation error where Angular modules load before the compiler
+ * is available. Works for Storybook UI but has limitations with Vitest due to ES module
+ * loading order (see FINAL_SUMMARY.md for details).
  */
 export function angularCompilerFirst(): Plugin {
   return {
@@ -15,8 +18,9 @@ export function angularCompilerFirst(): Plugin {
     enforce: 'pre',
     
     config(config) {
-      // Exclude Angular modules from dependency optimization
-      // This prevents Vite from pre-bundling them before compiler is available
+      // Exclude Angular modules from dependency optimization.
+      // This prevents Vite from pre-bundling them, allowing the HTML-injected
+      // compiler import to load first when the browser requests Angular modules.
       return {
         optimizeDeps: {
           ...config.optimizeDeps,
@@ -25,14 +29,14 @@ export function angularCompilerFirst(): Plugin {
             '@angular/common',
             '@angular/platform-browser',
             '@angular/platform-browser-dynamic',
-            '@angular/compiler',
           ],
         },
       };
     },
 
     transformIndexHtml(html) {
-      // Inject compiler script tag before any other Angular code
+      // Inject compiler script tag at the top of the HTML document.
+      // This ensures the compiler loads before any Angular module requests.
       return {
         html,
         tags: [
