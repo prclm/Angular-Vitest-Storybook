@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@analogjs/storybook-angular';
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 import { Button } from './button';
 
 const meta: Meta<Button> = {
